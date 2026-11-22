@@ -2,8 +2,12 @@
   "name": "bengkelmarket",
   "version": "0.1.0",
   "description": "Prototipe marketplace bengkel/sparepart/modifan motor — akun kunci kriptografi, ARIA-256-GCM, chat tanpa nomor",
-  "main": "server.js",
-  "scripts": { "start": "node start.js", "test": "node test.js" },
-  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node start.js",
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT"
 }
