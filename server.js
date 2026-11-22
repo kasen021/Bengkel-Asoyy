@@ -56,8 +56,6 @@ const adminAlias = (shopId, uid) => 'A-' + hmac('adm', shopId, uid).slice(0, 6);
 
 /* ------------------------------------------------------------------ penyimpanan */
 const mirror = require('./mirror');
-const mirror = require('./mirror');
-const mirror = require('./mirror');
 const kv = require('./kvstore');
 const ID_RE = /^[a-f0-9]{16}$/;
 const FILES = new Map(); const dirty = new Set(); // mode KV: salinan data selama satu permintaan
@@ -96,23 +94,30 @@ function rebuild() {
 }
 rebuild();
 let loadedAt = 0;
-async function load() { // mode KV: ambil data dari Upstash (cache 1,5 dtk agar hemat kuota)
+async function load() {
   if (!(Date.now() - loadedAt < 1500 && FILES.size)) {
     const arr = await kv.hgetall();
     FILES.clear();
     for (let i = 0; i + 1 < arr.length; i += 2) FILES.set(arr[i], arr[i + 1]);
     loadedAt = Date.now();
   }
+  rebuild();
+}
+
 async function flush() {
   if (!dirty.size) return;
-  const flat = []; for (const k of dirty) flat.push(k, FILES.get(k));
+  const flat = [];
+  for (const k of dirty) flat.push(k, FILES.get(k));
   dirty.clear();
   await kv.hset(flat);
 }
-let chain = Promise.resolve(); // satu permintaan sekali jalan per instance (hindari tabrakan tulis)
-const withLock = (fn) => { const r = chain.then(fn); chain = r.catch(() => {}); return r; };
-  rebuild();
-}
+
+let chain = Promise.resolve();
+const withLock = (fn) => {
+  const r = chain.then(fn);
+  chain = r.catch(() => {});
+  return r;
+};
 
 /* ------------------------------------------------------------------ util */
 class HttpError extends Error { constructor(status, msg) { super(msg); this.status = status; } }
