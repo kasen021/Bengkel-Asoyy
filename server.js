@@ -55,6 +55,7 @@ const adminAlias = (shopId, uid) => 'A-' + hmac('adm', shopId, uid).slice(0, 6);
 /* ------------------------------------------------------------------ penyimpanan */
 const readJson = (p, def) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return def; } };
 const mirror = require('./mirror');
+const mirror = require('./mirror');
 const writeAtomic = (p, s) => { const t = p + '.tmp'; fs.writeFileSync(t, s); fs.renameSync(t, p); mirror.put(DATA, p, s); };
 const ID_RE = /^[a-f0-9]{16}$/;
 const shopDir = (id) => path.join(DATA, 'shops', id);
