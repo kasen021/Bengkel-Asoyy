@@ -2,7 +2,7 @@
 
 module.exports = async function (req, res) {
   try {
-    const { handle } = require('../server');
+    const { handle } = require('../app.cjs');
     return await handle(req, res);
   } catch (e) {
     console.error('[VERCEL_BOOT_ERROR]', e && e.stack ? e.stack : e);
