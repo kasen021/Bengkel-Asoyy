@@ -3,7 +3,7 @@
 const fs = require('fs'), os = require('os'), path = require('path'), crypto = require('crypto');
 process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'bm-'));
 process.env.POW_BITS = '10';
-const { server } = require('./bengkel-core.cjs');
+const { server } = require('./api/_core.cjs');
 
 let pass = 0, fail = 0;
 const ok = (c, m) => { c ? pass++ : fail++; console.log((c ? 'PASS ' : 'FAIL ') + m); };

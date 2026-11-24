@@ -18,7 +18,7 @@ const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || '127.0.0.1';
 const TRUST_PROXY = process.env.TRUST_PROXY === '1';
 const DATA = path.resolve(process.env.DATA_DIR || path.join(__dirname, 'data'));
-const PUB = path.join(__dirname, 'public');
+const PUB = path.join(__dirname, '..', 'public');
 const POW_BITS = +process.env.POW_BITS || 16; // biaya komputasi pendaftaran (anti bot massal)
 const MIN_RSA_BITS = 4096;
 
@@ -55,8 +55,8 @@ const buyerAlias = (shopId, uid) => 'P-' + hmac('buy', shopId, uid).slice(0, 6);
 const adminAlias = (shopId, uid) => 'A-' + hmac('adm', shopId, uid).slice(0, 6);
 
 /* ------------------------------------------------------------------ penyimpanan */
-const mirror = require('./mirror');
-const kv = require('./kvstore');
+const mirror = require('./_mirror');
+const kv = require('./_kvstore');
 const ID_RE = /^[a-f0-9]{16}$/;
 const FILES = new Map(); const dirty = new Set(); // mode KV: salinan data selama satu permintaan
 const rd = (rel) => {
